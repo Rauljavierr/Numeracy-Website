@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Letter Land – Learn to Read</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E6F6FF;--ink:#26215C;--card:#fff;--sun:#FFC93C;--coral:#FF5A5F;--teal:#12B5A6;--violet:#6C4DF6;--sky:#3EA8FF;--soft:#F1EEFF;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1B1744;--ink:#FFF6D6;--card:#2C2670;--soft:#3A3390}}
+:root[data-theme="dark"]{--bg:#1B1744;--ink:#FFF6D6;--card:#2C2670;--soft:#3A3390}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Baloo 2","Trebuchet MS","Comic Sans MS",system-ui,sans-serif;font-size:18px;line-height:1.35}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:4px solid var(--violet);outline-offset:3px}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+.hidden{display:none!important}
+h1,h2,h3{margin:0;line-height:1.1}
+h1{font-size:2.4rem;font-weight:800}
+h2{font-size:1.5rem;font-weight:800;margin-bottom:10px}
+.btn{border:0;border-radius:999px;padding:12px 26px;font-weight:800;font-size:1.1rem;cursor:pointer;background:var(--coral);color:#fff;box-shadow:0 5px 0 #C23A40}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #C23A40}
+.btn.teal{background:var(--teal);box-shadow:0 5px 0 #0C847A}
+.btn.ghost{background:var(--soft);color:var(--ink);box-shadow:0 5px 0 rgba(0,0,0,.15)}
+.card{background:var(--card);border-radius:28px;padding:20px;margin-bottom:16px;border:4px solid var(--ink)}
+/* welcome */
+#welcome{min-height:100vh;display:flex;align-items:center}
+#welcome .card{background:var(--sun);color:#26215C;width:100%}
+.mascot{font-size:4.5rem;line-height:1;display:inline-block;animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px) rotate(-4deg)}}
+@media (prefers-reduced-motion:reduce){.mascot{animation:none}}
+label{display:block;font-weight:800;margin:14px 0 6px}
+input,select{width:100%;padding:12px 16px;border-radius:18px;border:4px solid #26215C;background:#fff;color:#26215C}
+.avatars{display:flex;gap:8px;flex-wrap:wrap}
+.avatars button{font-size:2rem;width:60px;height:60px;border-radius:50%;border:4px solid #26215C;background:#fff;cursor:pointer}
+.avatars button[aria-pressed=true]{background:var(--violet);transform:scale(1.12)}
+/* home */
+.top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.me{font-size:2.4rem;background:var(--sun);width:64px;height:64px;border-radius:50%;display:grid;place-items:center;border:4px solid var(--ink)}
+.top h1{font-size:1.7rem}
+.stars{margin-left:auto;background:var(--sun);color:#26215C;border-radius:999px;padding:6px 16px;font-weight:800;border:4px solid var(--ink)}
+.grid{display:grid;gap:16px}
+@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+.streak{background:var(--coral);color:#fff}
+.streak .big{font-size:3.4rem;font-weight:800;line-height:1}
+.days{display:flex;gap:6px;margin-top:10px}
+.days span{flex:1;text-align:center;background:rgba(255,255,255,.28);border-radius:14px;padding:4px 0;font-weight:700;font-size:.9rem}
+.days span.on{background:var(--sun);color:#26215C}
+.goal{background:var(--teal);color:#fff}
+.bar{height:22px;background:rgba(255,255,255,.35);border-radius:999px;overflow:hidden;margin:10px 0}
+.bar i{display:block;height:100%;background:var(--sun);border-radius:999px;transition:width .5s}
+.mission{background:var(--violet);color:#fff}
+.challenge{background:var(--sun);color:#26215C}
+.levels{display:grid;gap:12px}
+.lvl{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--soft);border:4px solid var(--ink);border-radius:24px;padding:12px 16px;cursor:pointer}
+.lvl .n{font-size:2rem;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;flex:none}
+.lvl b{display:block;font-size:1.2rem}
+.lvl small{font-size:.95rem;opacity:.85}
+.lvl .st{margin-left:auto;white-space:nowrap;font-size:1.3rem}
+.lvl[disabled]{opacity:.55;cursor:not-allowed}
+/* quiz */
+#quiz{position:fixed;inset:0;background:var(--bg);z-index:20;overflow:auto;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.q-emoji{font-size:6rem;text-align:center;line-height:1.1}
+.q-text{text-align:center;font-size:1.6rem;font-weight:800;margin:8px 0 18px}
+.opts{display:grid;gap:12px;grid-template-columns:repeat(3,1fr)}
+.opts button{font-size:2rem;font-weight:800;padding:18px 6px;border-radius:24px;border:4px solid var(--ink);background:var(--card);cursor:pointer}
+.opts button.good{background:var(--teal);color:#fff}
+.opts button.bad{background:var(--coral);color:#fff}
+.dots{display:flex;gap:8px;justify-content:center;margin:12px 0}
+.dots i{width:16px;height:16px;border-radius:50%;background:var(--soft);border:3px solid var(--ink)}
+.dots i.done{background:var(--sun)}
+.msg{text-align:center;font-size:1.3rem;font-weight:800;min-height:2em;margin:14px 0}
+.kids{display:flex;justify-content:center;gap:4px;margin-bottom:14px}.kids svg{width:15%;max-width:90px;height:auto}
+.avatars button{overflow:hidden;padding:0}.avatars button svg{width:100%;height:100%}.me{overflow:hidden}.me svg{width:100%;height:100%}
+.opts.long button{font-size:1.3rem}
+footer{text-align:center;opacity:.8;font-size:.95rem;padding:10px 0 24px}
+</style>
+</head>
+<body>
+
+<main id="welcome" class="wrap">
+  <div class="card">
+    <div class="kids" id="kidsHero" aria-hidden="true"></div>
+    <h1>Welcome to Letter Land!</h1>
+    <p>Tell us about you, then start reading adventures. It's free and works anywhere.</p>
+    <label for="name">What is your name?</label>
+    <input id="name" maxlength="20" autocomplete="off" placeholder="Type your name">
+    <label for="age">How old are you?</label>
+    <select id="age"><option>5</option><option>6</option><option>7</option><option selected>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select>
+    <label for="country">Where do you live?</label>
+    <select id="country"><option value="Africa">Africa</option><option value="India">India</option><option value="China">China</option></select>
+    <label id="avl">Pick your friend</label>
+    <div class="avatars" role="group" aria-labelledby="avl" id="avatars"></div>
+    <p style="margin-top:22px"><button class="btn" id="start">Start playing!</button></p>
+    <p id="err" style="font-weight:800;color:#B3202A" role="alert"></p>
+  </div>
+</main>
+
+<main id="home" class="wrap hidden">
+  <div class="top">
+    <div class="me" id="meAv" aria-hidden="true"></div>
+    <div><h1 id="hello"></h1><div id="sub"></div></div>
+    <div class="stars" aria-label="Total stars">⭐ <span id="starCount">0</span></div>
+    <button class="btn ghost" id="mute" aria-label="Sound on or off" style="padding:6px 14px;box-shadow:none">🔊</button>
+  </div>
+
+  <div class="grid">
+    <section class="card streak" aria-labelledby="h-streak">
+      <h2 id="h-streak">Streak</h2>
+      <div><span class="big" id="streakN">0</span> <b>days in a row 🔥</b></div>
+      <div class="days" id="days"></div>
+    </section>
+    <section class="card goal" aria-labelledby="h-goal">
+      <h2 id="h-goal">Daily goal</h2>
+      <div id="goalTxt"></div>
+      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="3" id="goalBar"><i id="goalFill"></i></div>
+      <div id="goalNote"></div>
+    </section>
+  </div>
+
+  <div class="kids" id="kidsHome" aria-hidden="true"></div>
+  <section class="card mission" aria-labelledby="h-mission">
+    <h2 id="h-mission">Mission</h2>
+    <p id="missionTxt" style="margin:0 0 6px"></p>
+    <div class="bar"><i id="missionFill"></i></div>
+    <div id="missionNote"></div>
+  </section>
+
+  <section class="card challenge" aria-labelledby="h-chal">
+    <h2 id="h-chal">Today's challenge</h2>
+    <p style="margin:0 0 12px">Answer 3 mixed questions. Get all 3 right to win 2 bonus stars!</p>
+    <button class="btn" id="chalBtn">Play challenge</button>
+    <span id="chalDone" style="font-weight:800"></span>
+  </section>
+
+  <section class="card" aria-labelledby="h-lvl">
+    <h2 id="h-lvl">Levels</h2>
+    <p style="margin:0 0 12px">Get 60% right (3 of 5) to earn 2 stars and unlock the next level. Each level is harder!</p>
+    <div class="levels" id="levels"></div>
+  </section>
+
+  <footer>Letter Land · made for every child who loves to learn · <button class="btn ghost" id="reset" style="padding:4px 14px;font-size:.9rem;box-shadow:none">Change player</button></footer>
+</main>
+
+<section id="quiz" class="hidden" role="dialog" aria-modal="true" aria-label="Lesson">
+  <div class="wrap">
+    <button class="btn ghost" id="close">Back</button>
+    <h2 id="qTitle" style="text-align:center;margin-top:10px"></h2>
+    <div class="dots" id="dots"></div>
+    <div class="q-emoji" id="qEmoji"></div>
+    <div class="q-text" id="qText"></div>
+    <div style="text-align:center;margin-bottom:14px"><button class="btn teal" id="hearBtn">🔊 Hear it</button></div>
+    <div class="opts" id="opts"></div>
+    <div class="msg" id="msg" aria-live="polite"></div>
+    <div style="text-align:center"><button class="btn teal hidden" id="next">Next</button></div>
+  </div>
+</section>
+
+<script>
+var K=[["#8D5524","#1b1b1b","#FF5A5F",1],["#C68642","#1b1b1b","#12B5A6",2],["#F3D2A2","#111","#6C4DF6",0],["#FFDBAC","#E8B130","#3EA8FF",4],["#5C3A21","#111","#FFC93C",3],["#E0AC69","#4a2c17","#F08A00",0]];
+function kid(i){var k=K[i],s=k[0],h=k[1],c=k[2],t=k[3],b="",f="";
+if(t==1)b='<circle cx="50" cy="38" r="33" fill="'+h+'"/>';
+if(t==4)b='<rect x="19" y="26" width="62" height="62" rx="26" fill="'+h+'"/>';
+if(t==2)b='<circle cx="19" cy="52" r="10" fill="'+h+'"/><circle cx="81" cy="52" r="10" fill="'+h+'"/>';
+if(t==3)f='<circle cx="50" cy="13" r="9" fill="'+h+'"/>';
+return '<svg viewBox="0 0 100 110" aria-hidden="true">'+b+'<path d="M10 110Q10 76 50 76Q90 76 90 110Z" fill="'+c+'"/><rect x="43" y="64" width="14" height="16" fill="'+s+'"/><circle cx="50" cy="46" r="26" fill="'+s+'"/><path d="M24 46Q22 16 50 16Q78 16 76 46Q62 30 50 30Q38 30 24 46Z" fill="'+h+'"/>'+f+'<circle cx="41" cy="49" r="3.2" fill="#26215C"/><circle cx="59" cy="49" r="3.2" fill="#26215C"/><path d="M41 58Q50 66 59 58" stroke="#26215C" stroke-width="3" fill="none" stroke-linecap="round"/></svg>'}
+var snd=true,AC=null;
+try{snd=localStorage.getItem("ll-snd")!=="0"}catch(e){}
+function say(t){if(!snd||!window.speechSynthesis)return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.8;u.pitch=1.15;speechSynthesis.speak(u)}catch(e){}}
+function tone(k){if(!snd)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();var seq=k=="win"?[523,659,784,1047]:k=="ok"?[660,880]:[220,165],n=AC.currentTime;seq.forEach(function(f,i){var o=AC.createOscillator(),g=AC.createGain();o.type=k=="bad"?"triangle":"sine";o.frequency.value=f;g.gain.setValueAtTime(.2,n+i*.12);g.gain.exponentialRampToValueAtTime(.001,n+i*.12+.25);o.connect(g);g.connect(AC.destination);o.start(n+i*.12);o.stop(n+i*.12+.3)})}catch(e){}}
+function hear(){var q=Q[qi];if(q)say(q[1]+" "+q[2].join(", ")+".")}
+function layout(q){var o=q[2],lg=o.some(function(x){return x.length>6}),c=lg?1:o.length==4?2:3;$("opts").className="opts"+(lg?" long":"");$("opts").style.gridTemplateColumns="repeat("+c+",1fr)"}
+var HELLO={Africa:"Jambo",India:"Namaste",China:"Nǐ hǎo"};
+var COLORS=["#FF5A5F","#12B5A6","#6C4DF6","#3EA8FF","#F08A00"];
+var LV=[
+ {t:"Letters",d:"Match pictures to letters",q:[["🍎","Which letter does apple start with?",["A","B","M"],0],["🐱","Which letter does cat start with?",["K","C","T"],1],["🐘","Which letter does elephant start with?",["L","E","O"],1],["🥭","Which letter does mango start with?",["N","W","M"],2],["🐍","Which letter does snake start with?",["S","Z","N"],0]]},
+ {t:"Sounds",d:"Find words that rhyme",q:[["🐱","Which word rhymes with cat?",["bat","dog","sun","cup"],0],["🐟","Which word rhymes with fish?",["dish","cup","tree","bed"],0],["🐝","Which word rhymes with bee?",["car","tea","pen","bus"],1],["⭐","Which word rhymes with star?",["jar","sun","hen","pot"],0],["🌙","Which word rhymes with moon?",["spoon","moth","mouse","mop"],0]]},
+ {t:"Words",d:"Pick the right spelling",q:[["☀️","Which is the right spelling of sun?",["sin","sun","son","sen"],1],["🐶","Which is the right spelling of dog?",["dog","bog","dig","dag"],0],["🌳","Which is the right spelling of tree?",["tre","tee","tree","trea"],2],["🍌","Which is the right spelling of banana?",["bananna","banana","bannana","banna"],1],["🐘","Which is the right spelling of elephant?",["elefant","elephant","elephent","eliphant"],1]]},
+ {t:"Sentences",d:"Finish the sentence",q:[["🐱","The cat ___ on the mat.",["sat","sky","sit","sad"],0],["☔","It was raining, so I took my ___.",["umbrella","spoon","shoe","book"],0],["🎒","Every day I ___ to school.",["walk","walks","walked","walking"],0],["🐦","The birds ___ in the tree.",["sing","sings","is sing","sung"],0],["👧","She ___ a red hat.",["wears","wear","wearing","weared"],0]]},
+ {t:"Stories",d:"Read short stories",q:[["🐇","Tom has a rabbit. It likes carrots. What does the rabbit like?",["carrots","fish","bread","milk"],0],["⛈️","The sky is dark. The thunder is loud. What will happen soon?",["rain","snow","a party","night"],0],["🥭","Asha picks a mango. She shares it with her brother. Who gets some mango?",["her brother","her teacher","a cow","a bird"],0],["🏫","Sam wakes up early. He walks to school and meets his friends. Where is Sam going?",["school","market","river","bed"],0],["🪣","Lina carries water from the well. The bucket is heavy, so her sister helps. Why does her sister help?",["It is heavy","It is red","It is empty","It is lost"],0]]}
+];
+var S=null,KEY="letterland-v1",cur=null;
+function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function day(d){d=d||new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()}
+function $(i){return document.getElementById(i)}
+
+/* welcome */
+var pick=0;
+K.forEach(function(a,i){var b=document.createElement("button");b.innerHTML=kid(i);b.setAttribute("aria-label","Friend "+(i+1));b.setAttribute("aria-pressed",i==0);b.onclick=function(){pick=i;[].forEach.call($("avatars").children,function(x){x.setAttribute("aria-pressed",x===b)})};$("avatars").appendChild(b)});
+$("start").onclick=function(){
+  var n=$("name").value.trim();
+  if(!n){$("err").textContent="Please type your name first.";$("name").focus();return}
+  S={name:n,age:$("age").value,country:$("country").value,av:pick,stars:0,done:{},streak:0,last:null,days:{},today:{d:day(),n:0,chal:false}};
+  save();show();say("Welcome to Letter Land, "+n+"!");
+};
+$("reset").onclick=function(){if(confirm("Start over with a new player?")){try{localStorage.removeItem(KEY)}catch(e){}S=null;show()}};
+
+/* home */
+function show(){
+  $("welcome").classList.toggle("hidden",!!S);
+  $("home").classList.toggle("hidden",!S);
+  if(S)render();
+}
+function render(){
+  if(S.today.d!==day())S.today={d:day(),n:0,chal:false};
+  var y=new Date();y.setDate(y.getDate()-1);
+  if(S.last&&S.last!==day()&&S.last!==day(y))S.streak=0;
+  $("meAv").innerHTML=kid(typeof S.av=="number"?S.av:0);
+  $("hello").textContent=HELLO[S.country]+", "+S.name+"!";
+  $("sub").textContent="Ready to read today?";
+  $("starCount").textContent=S.stars;
+  $("streakN").textContent=S.streak;
+  var names=["Su","Mo","Tu","We","Th","Fr","Sa"],h="",t=new Date();
+  for(var i=6;i>=0;i--){var d=new Date();d.setDate(t.getDate()-i);h+='<span class="'+(S.days[day(d)]?"on":"")+'">'+names[d.getDay()]+"<br>"+(S.days[day(d)]?"🔥":"·")+"</span>"}
+  $("days").innerHTML=h;
+  var n=Math.min(S.today.n,3);
+  $("goalTxt").textContent=n+" of 3 lessons today";
+  $("goalFill").style.width=(n/3*100)+"%";
+  $("goalBar").setAttribute("aria-valuenow",n);
+  $("goalNote").textContent=n>=3?"Goal done! Amazing work! 🎉":"Finish "+(3-n)+" more to reach your goal.";
+  var done=Object.keys(S.done).filter(function(k){return S.done[k]>=2}).length;
+  $("missionTxt").textContent="Help Zuri the lion climb Reading Hill. Finish all 5 levels to reach the top!";
+  $("missionFill").style.width=(done/5*100)+"%";
+  $("missionNote").textContent=done+" of 5 levels finished 🦁⛰️";
+  $("chalBtn").disabled=S.today.chal;
+  $("chalDone").textContent=S.today.chal?" Challenge done today! ✅":"";
+  var L="";
+  LV.forEach(function(l,i){
+    var open=i==0||(S.done[i-1]||0)>=2,s=S.done[i]||0;
+    L+='<button class="lvl" data-i="'+i+'"'+(open?"":" disabled")+'><span class="n" style="background:'+COLORS[i]+'">'+(open?i+1:"🔒")+'</span><span><b>'+l.t+'</b><small>'+l.d+" · "+["Easy","Getting trickier","Medium","Hard","Super hard"][i]+'</small></span><span class="st">'+(s?"⭐".repeat(s)+(s<2?" try again":""):(open?"▶":""))+"</span></button>";
+  });
+  $("levels").innerHTML=L;
+  [].forEach.call(document.querySelectorAll(".lvl:not([disabled])"),function(b){b.onclick=function(){play(+b.dataset.i)}});
+  save();
+}
+
+/* quiz */
+var Q=[],qi=0,right=0,mode=null,fin=false;
+function play(i){mode={lvl:i};Q=LV[i].q.slice();open_(LV[i].t)}
+$("chalBtn").onclick=function(){
+  var all=[];LV.forEach(function(l){all=all.concat(l.q)});
+  all.sort(function(){return Math.random()-.5});
+  mode={chal:true};Q=all.slice(0,3);open_("Daily challenge");
+};
+function open_(title){qi=0;right=0;fin=false;$("opts").dataset.lock="";$("qTitle").textContent=title;$("quiz").classList.remove("hidden");ask()}
+$("close").onclick=function(){$("quiz").classList.add("hidden");render()};
+function ask(){
+  var q=Q[qi];
+  $("qEmoji").textContent=q[0];$("qText").textContent=q[1];layout(q);hear();
+  $("msg").textContent="";$("next").classList.add("hidden");
+  $("dots").innerHTML=Q.map(function(_,i){return '<i class="'+(i<qi?"done":"")+'"></i>'}).join("");
+  $("opts").innerHTML="";
+  q[2].forEach(function(o,i){var b=document.createElement("button");b.textContent=o;
+    b.onclick=function(){answer(i,b)};$("opts").appendChild(b)});
+}
+function answer(i,b){
+  var q=Q[qi],bs=$("opts").children;
+  if($("opts").dataset.lock==qi)return;$("opts").dataset.lock=qi;
+  if(i==q[3]){right++;b.classList.add("good");$("msg").textContent="Yes! Great job! 🎉";tone("ok");say("Yes! Great job! "+q[2][i])}
+  else{b.classList.add("bad");bs[q[3]].classList.add("good");$("msg").textContent="Good try! The answer is "+q[2][q[3]]+".";tone("bad");say("Good try! The answer is "+q[2][q[3]])}
+  $("next").textContent=qi==Q.length-1?"Finish":"Next";$("next").classList.remove("hidden");$("next").focus();
+}
+$("next").onclick=function(){
+  if(fin){$("close").onclick();return}if(qi<Q.length-1){qi++;ask();return}
+  finish();
+};
+function finish(){
+  var pct=right/Q.length,earn=pct>=.8?3:pct>=.6?2:1,msg,pass=earn>=2;
+  if(mode.chal){
+    earn=right==3?2:0;S.today.chal=true;
+    msg=earn?"You won 2 bonus stars! ⭐⭐":"Nice try! Come back tomorrow.";
+  }else{
+    var prev=S.done[mode.lvl]||0;S.done[mode.lvl]=Math.max(prev,earn);var gain=Math.max(0,earn-prev);
+    msg=right+" out of "+Q.length+" correct! "+"⭐".repeat(earn)+(pass?" Next level unlocked!":" Get "+Math.ceil(Q.length*.6)+" right to move on. Try again!");
+    earn=gain;
+  }
+  if(!mode.chal||true){S.today.n++}
+  S.stars+=earn;
+  var d=day();
+  if(!S.days[d]){S.days[d]=1;if(S.last!==d)S.streak++;S.last=d}
+  save();
+  var ok=mode.chal?earn>0:pass;$("qEmoji").textContent=ok?"🏆":"💪";$("qText").textContent=msg;fin=true;tone(ok?"win":"bad");say(msg.replace(/⭐+/g,""));$("opts").innerHTML="";$("dots").innerHTML="";
+  $("msg").textContent=S.today.n==3?"Daily goal complete! 🎉":"Keep going!";
+  $("next").textContent="Back to levels";$("next").classList.remove("hidden");
+}
+
+load();
+$("kidsHero").innerHTML=$("kidsHome").innerHTML=K.map(function(_,i){return kid(i)}).join("");
+$("mute").textContent=snd?"🔊":"🔇";
+$("mute").onclick=function(){snd=!snd;try{localStorage.setItem("ll-snd",snd?"1":"0")}catch(e){}if(!snd&&window.speechSynthesis)speechSynthesis.cancel();$("mute").textContent=snd?"🔊":"🔇"};
+$("hearBtn").onclick=hear;
+show();
+</script>
+</body>
+</html>
