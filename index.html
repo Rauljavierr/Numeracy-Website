@@ -75,6 +75,7 @@ input,select{width:100%;padding:12px 16px;border-radius:18px;border:4px solid #2
 .kids{display:flex;justify-content:center;gap:4px;margin-bottom:14px}.kids svg{width:15%;max-width:90px;height:auto}
 .avatars button{overflow:hidden;padding:0}.avatars button svg{width:100%;height:100%}.me{overflow:hidden}.me svg{width:100%;height:100%}
 .opts.long button{font-size:1.3rem}
+body::before{content:"";display:block;height:10px;background:linear-gradient(90deg,#FF9933 33%,#fff 33% 66%,#138808 66%)}
 footer{text-align:center;opacity:.8;font-size:.95rem;padding:10px 0 24px}
 </style>
 </head>
@@ -83,14 +84,14 @@ footer{text-align:center;opacity:.8;font-size:.95rem;padding:10px 0 24px}
 <main id="welcome" class="wrap">
   <div class="card">
     <div class="kids" id="kidsHero" aria-hidden="true"></div>
-    <h1>Welcome to Letter Land!</h1>
+    <h1>Namaste! Welcome to Letter Land!</h1>
     <p>Tell us about you, then start reading adventures. It's free and works anywhere.</p>
     <label for="name">What is your name?</label>
     <input id="name" maxlength="20" autocomplete="off" placeholder="Type your name">
     <label for="age">How old are you?</label>
     <select id="age"><option>5</option><option>6</option><option>7</option><option selected>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select>
     <label for="country">Where do you live?</label>
-    <select id="country"><option value="Africa">Africa</option><option value="India">India</option><option value="China">China</option></select>
+    <select id="country"><option value="India">India</option><option value="Africa">Africa</option><option value="China">China</option></select>
     <label id="avl">Pick your friend</label>
     <div class="avatars" role="group" aria-labelledby="avl" id="avatars"></div>
     <p style="margin-top:22px"><button class="btn" id="start">Start playing!</button></p>
@@ -159,7 +160,7 @@ footer{text-align:center;opacity:.8;font-size:.95rem;padding:10px 0 24px}
 </section>
 
 <script>
-var K=[["#8D5524","#1b1b1b","#FF5A5F",1],["#C68642","#1b1b1b","#12B5A6",2],["#F3D2A2","#111","#6C4DF6",0],["#FFDBAC","#E8B130","#3EA8FF",4],["#5C3A21","#111","#FFC93C",3],["#E0AC69","#4a2c17","#F08A00",0]];
+var K=[["#C68642","#1b1b1b","#FF5A5F",2],["#B9773F","#1b1b1b","#FFC93C",0],["#D49A66","#111","#12B5A6",4],["#A9693A","#1b1b1b","#6C4DF6",3],["#8D5524","#1b1b1b","#3EA8FF",1],["#F3D2A2","#111","#F08A00",0]];
 function kid(i){var k=K[i],s=k[0],h=k[1],c=k[2],t=k[3],b="",f="";
 if(t==1)b='<circle cx="50" cy="38" r="33" fill="'+h+'"/>';
 if(t==4)b='<rect x="19" y="26" width="62" height="62" rx="26" fill="'+h+'"/>';
@@ -168,18 +169,18 @@ if(t==3)f='<circle cx="50" cy="13" r="9" fill="'+h+'"/>';
 return '<svg viewBox="0 0 100 110" aria-hidden="true">'+b+'<path d="M10 110Q10 76 50 76Q90 76 90 110Z" fill="'+c+'"/><rect x="43" y="64" width="14" height="16" fill="'+s+'"/><circle cx="50" cy="46" r="26" fill="'+s+'"/><path d="M24 46Q22 16 50 16Q78 16 76 46Q62 30 50 30Q38 30 24 46Z" fill="'+h+'"/>'+f+'<circle cx="41" cy="49" r="3.2" fill="#26215C"/><circle cx="59" cy="49" r="3.2" fill="#26215C"/><path d="M41 58Q50 66 59 58" stroke="#26215C" stroke-width="3" fill="none" stroke-linecap="round"/></svg>'}
 var snd=true,AC=null;
 try{snd=localStorage.getItem("ll-snd")!=="0"}catch(e){}
-function say(t){if(!snd||!window.speechSynthesis)return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.8;u.pitch=1.15;speechSynthesis.speak(u)}catch(e){}}
+function say(t){if(!snd||!window.speechSynthesis)return;try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="en-IN";u.rate=.8;u.pitch=1.15;speechSynthesis.speak(u)}catch(e){}}
 function tone(k){if(!snd)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();var seq=k=="win"?[523,659,784,1047]:k=="ok"?[660,880]:[220,165],n=AC.currentTime;seq.forEach(function(f,i){var o=AC.createOscillator(),g=AC.createGain();o.type=k=="bad"?"triangle":"sine";o.frequency.value=f;g.gain.setValueAtTime(.2,n+i*.12);g.gain.exponentialRampToValueAtTime(.001,n+i*.12+.25);o.connect(g);g.connect(AC.destination);o.start(n+i*.12);o.stop(n+i*.12+.3)})}catch(e){}}
 function hear(){var q=Q[qi];if(q)say(q[1]+" "+q[2].join(", ")+".")}
 function layout(q){var o=q[2],lg=o.some(function(x){return x.length>6}),c=lg?1:o.length==4?2:3;$("opts").className="opts"+(lg?" long":"");$("opts").style.gridTemplateColumns="repeat("+c+",1fr)"}
 var HELLO={Africa:"Jambo",India:"Namaste",China:"Nǐ hǎo"};
 var COLORS=["#FF5A5F","#12B5A6","#6C4DF6","#3EA8FF","#F08A00"];
 var LV=[
- {t:"Letters",d:"Match pictures to letters",q:[["🍎","Which letter does apple start with?",["A","B","M"],0],["🐱","Which letter does cat start with?",["K","C","T"],1],["🐘","Which letter does elephant start with?",["L","E","O"],1],["🥭","Which letter does mango start with?",["N","W","M"],2],["🐍","Which letter does snake start with?",["S","Z","N"],0]]},
+ {t:"Letters",d:"Match pictures to letters",q:[["🍎","Which letter does apple start with?",["A","B","M"],0],["🦚","Which letter does peacock start with?",["B","P","K"],1],["🐘","Which letter does elephant start with?",["L","E","O"],1],["🥭","Which letter does mango start with?",["N","W","M"],2],["🐯","Which letter does tiger start with?",["D","T","L"],1]]},
  {t:"Sounds",d:"Find words that rhyme",q:[["🐱","Which word rhymes with cat?",["bat","dog","sun","cup"],0],["🐟","Which word rhymes with fish?",["dish","cup","tree","bed"],0],["🐝","Which word rhymes with bee?",["car","tea","pen","bus"],1],["⭐","Which word rhymes with star?",["jar","sun","hen","pot"],0],["🌙","Which word rhymes with moon?",["spoon","moth","mouse","mop"],0]]},
- {t:"Words",d:"Pick the right spelling",q:[["☀️","Which is the right spelling of sun?",["sin","sun","son","sen"],1],["🐶","Which is the right spelling of dog?",["dog","bog","dig","dag"],0],["🌳","Which is the right spelling of tree?",["tre","tee","tree","trea"],2],["🍌","Which is the right spelling of banana?",["bananna","banana","bannana","banna"],1],["🐘","Which is the right spelling of elephant?",["elefant","elephant","elephent","eliphant"],1]]},
- {t:"Sentences",d:"Finish the sentence",q:[["🐱","The cat ___ on the mat.",["sat","sky","sit","sad"],0],["☔","It was raining, so I took my ___.",["umbrella","spoon","shoe","book"],0],["🎒","Every day I ___ to school.",["walk","walks","walked","walking"],0],["🐦","The birds ___ in the tree.",["sing","sings","is sing","sung"],0],["👧","She ___ a red hat.",["wears","wear","wearing","weared"],0]]},
- {t:"Stories",d:"Read short stories",q:[["🐇","Tom has a rabbit. It likes carrots. What does the rabbit like?",["carrots","fish","bread","milk"],0],["⛈️","The sky is dark. The thunder is loud. What will happen soon?",["rain","snow","a party","night"],0],["🥭","Asha picks a mango. She shares it with her brother. Who gets some mango?",["her brother","her teacher","a cow","a bird"],0],["🏫","Sam wakes up early. He walks to school and meets his friends. Where is Sam going?",["school","market","river","bed"],0],["🪣","Lina carries water from the well. The bucket is heavy, so her sister helps. Why does her sister help?",["It is heavy","It is red","It is empty","It is lost"],0]]}
+ {t:"Words",d:"Pick the right spelling",q:[["☀️","Which is the right spelling of sun?",["sin","sun","son","sen"],1],["🥭","Which is the right spelling of mango?",["mango","mengo","mangoo","mnago"],0],["🌳","Which is the right spelling of tree?",["tre","tee","tree","trea"],2],["🪁","Which is the right spelling of kite?",["kyte","kite","kait","keit"],1],["🐘","Which is the right spelling of elephant?",["elefant","elephant","elephent","eliphant"],1]]},
+ {t:"Sentences",d:"Finish the sentence",q:[["🏏","Ravi ___ the cricket ball.",["hit","hat","hot","hut"],0],["☔","It was raining, so I took my ___.",["umbrella","spoon","shoe","book"],0],["🎒","Every day I ___ to school.",["walk","walks","walked","walking"],0],["🦚","The peacocks ___ in the rain.",["dance","dances","dancing","dancer"],0],["👧","Meena ___ a red sari.",["wears","wear","wearing","weared"],0]]},
+ {t:"Stories",d:"Read short stories",q:[["🐐","Priya has a goat. It likes grass. What does the goat like?",["grass","fish","bread","tea"],0],["⛈️","The sky is dark. The thunder is loud. What will happen soon?",["rain","snow","a party","night"],0],["🥭","Asha picks a mango. She shares it with her brother. Who gets some mango?",["her brother","her teacher","a cow","a bird"],0],["🏫","Ravi wakes up early. He walks to school and meets his friends. Where is Ravi going?",["school","market","river","bed"],0],["🪣","Lina carries water from the well. The bucket is heavy, so her sister helps. Why does her sister help?",["It is heavy","It is red","It is empty","It is lost"],0]]}
 ];
 var S=null,KEY="letterland-v1",cur=null;
 function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}}
@@ -194,7 +195,7 @@ $("start").onclick=function(){
   var n=$("name").value.trim();
   if(!n){$("err").textContent="Please type your name first.";$("name").focus();return}
   S={name:n,age:$("age").value,country:$("country").value,av:pick,stars:0,done:{},streak:0,last:null,days:{},today:{d:day(),n:0,chal:false}};
-  save();show();say("Welcome to Letter Land, "+n+"!");
+  save();show();say("Namaste, "+n+"! Welcome to Letter Land!");
 };
 $("reset").onclick=function(){if(confirm("Start over with a new player?")){try{localStorage.removeItem(KEY)}catch(e){}S=null;show()}};
 
@@ -222,9 +223,9 @@ function render(){
   $("goalBar").setAttribute("aria-valuenow",n);
   $("goalNote").textContent=n>=3?"Goal done! Amazing work! 🎉":"Finish "+(3-n)+" more to reach your goal.";
   var done=Object.keys(S.done).filter(function(k){return S.done[k]>=2}).length;
-  $("missionTxt").textContent="Help Zuri the lion climb Reading Hill. Finish all 5 levels to reach the top!";
+  $("missionTxt").textContent="Help Raja the tiger climb Reading Hill. Finish all 5 levels to reach the top!";
   $("missionFill").style.width=(done/5*100)+"%";
-  $("missionNote").textContent=done+" of 5 levels finished 🦁⛰️";
+  $("missionNote").textContent=done+" of 5 levels finished 🐯⛰️";
   $("chalBtn").disabled=S.today.chal;
   $("chalDone").textContent=S.today.chal?" Challenge done today! ✅":"";
   var L="";
@@ -245,7 +246,7 @@ $("chalBtn").onclick=function(){
   all.sort(function(){return Math.random()-.5});
   mode={chal:true};Q=all.slice(0,3);open_("Daily challenge");
 };
-function open_(title){qi=0;right=0;fin=false;$("opts").dataset.lock="";$("qTitle").textContent=title;$("quiz").classList.remove("hidden");ask()}
+function open_(title){qi=0;right=0;fin=false;$("opts").dataset.lock="-1";$("qTitle").textContent=title;$("quiz").classList.remove("hidden");ask()}
 $("close").onclick=function(){$("quiz").classList.add("hidden");render()};
 function ask(){
   var q=Q[qi];
